@@ -163,9 +163,15 @@ class HtmlToolbarHelper extends ToolbarHelper {
 		if (preg_match('#</head>#', $view->output)) {
 			$view->output = preg_replace('#</head>#', $head . "\n</head>", $view->output, 1);
 		}
+		$timersBackup = DebugTimer::getAll(false);
 		$toolbar = $view->element('debug_toolbar', array('disableTimer' => true), array('plugin' => 'DebugKit'));
 		if (preg_match('#</body>#', $view->output)) {
 			$view->output = preg_replace('#</body>#', $toolbar . "\n</body>", $view->output, 1);
+		}
+
+		$timerInComments = $view->element('timer_in_comments', array('timers' => $timersBackup, 'disableTimer' => true), array('plugin' => 'DebugKit'));
+		if (preg_match('#</body>#', $view->output)) {
+			$view->output = preg_replace('#</body>#', $timerInComments . "\n</body>", $view->output, 1);
 		}
 	}
 
